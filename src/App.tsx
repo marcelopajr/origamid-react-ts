@@ -1,25 +1,14 @@
 import { useState } from "react";
 
-import Input from "./Input";
+import Button from "./Button";
 
 function App() {
-  const [data, setData] = useState("");
+  const [total, setTotal] = useState(0);
 
   return (
     <div>
-      <p>Início da Viagem: {data}</p>
-      <Input id="email" label="Email" type="email" />
-      <Input id="nome" label="Nome" />
-      <Input
-        id="inicio"
-        label="Início da Viagem"
-        type="date"
-        value={data}
-        onChange={(event) => {
-          setData(event.currentTarget.value);
-        }}
-      />
-      <Input id="horario" label="Horário" type="time" />
+      <p>Total: {total}</p>
+      <Button total={total} setTotal={setTotal} />
     </div>
   );
 }
