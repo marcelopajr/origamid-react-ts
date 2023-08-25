@@ -1,14 +1,14 @@
 import { useState } from "react";
 
 import Button from "./Button";
+import Checkbox from "./Checkbox";
 
 function App() {
   const [total, setTotal] = useState(0);
 
   return (
     <div>
-      <p>Total: {total}</p>
-      <Button total={total} setTotal={setTotal} />
+      <Checkbox label="Termos e Condições" />
     </div>
   );
 }
