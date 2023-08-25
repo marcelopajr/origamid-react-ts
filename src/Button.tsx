@@ -1,14 +1,11 @@
 import React from "react";
 
 type ButtonProps = {
-  total: number;
-  setTotal: React.Dispatch<React.SetStateAction<number>>;
+  incrementar: React.Dispatch<React.SetStateAction<number>>;
 };
 
-const Button = ({ total, setTotal }: ButtonProps) => {
-  return (
-    <button onClick={() => setTotal((t) => t + 1)}>Incrementar {total}</button>
-  );
+const Button = ({ incrementar }: ButtonProps) => {
+  return <button onClick={() => incrementar((n) => n + 1)}>Incrementar</button>;
 };
 
 export default Button;
