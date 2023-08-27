@@ -1,40 +1,41 @@
 import { useState, useEffect } from "react";
-import Button from "./Button";
+import Input from "./Input";
 
-function user() {
-  return {
-    nome: "Marcelo",
-    profissao: "dev",
-  };
-}
-
-type User = {
+type Venda = {
+  id: string;
   nome: string;
-  profissao: string;
+  preco: number;
+  status: string;
 };
 
 function App() {
-  const [data, setData] = useState<null | User>(null);
-  const [total, setTotal] = useState(0);
+  const [inicio, setInicio] = useState("");
+  const [final, setFinal] = useState("");
+  const [data, setData] = useState<null | Venda[]>(null);
 
   useEffect(() => {
-    setTimeout(() => {
-      setData(user());
-    }, 1000);
-  }, []);
+    if (inicio !== "" && final !== "") {
+      fetch(`https://data.origamid.dev/vendas/?inicio=${inicio}&final=${final}`)
+        .then((r) => r.json().then((json) => setData(json as Venda[])))
+        .catch((error) => console.log(error));
+    }
+  }, [inicio, final]);
 
   return (
     <div>
-      <p>Total: {total}</p>
       <div>
-        <Button incrementar={setTotal} />
+        <Input label="Início" type="date" value={inicio} setState={setInicio} />
+        <Input label="Final" type="date" value={final} setState={setFinal} />
       </div>
 
-      {data !== null && (
-        <div>
-          {data.nome}: {data.profissao}
-        </div>
-      )}
+      <ul>
+        {data !== null &&
+          data.map((venda) => (
+            <li key={venda.id}>
+              {venda.nome}: {venda.status}
+            </li>
+          ))}
+      </ul>
     </div>
   );
 }
