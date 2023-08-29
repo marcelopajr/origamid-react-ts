@@ -1,28 +1,52 @@
-import { useRef, useEffect } from "react";
-import useLocalStorage from "./hooks/useLocalStorage";
-import videoSrc from "./assets/video.mp4";
+import { useState } from "react";
+import useFetch from "./hooks/useFetch";
+
+type Produto = {
+  id: string;
+  nome: string;
+  preco: number;
+  quantidade: number;
+  descricao: string;
+  internacional: boolean;
+};
 
 function App() {
-  const video = useRef<HTMLVideoElement>(null);
-  const [volume, setVolume] = useLocalStorage("volume", "0");
-
-  useEffect(() => {
-    if (!video.current) return;
-    if (Number(volume) >= 0 && Number(volume) <= 1) {
-      video.current.volume = Number(volume);
-    }
-  }, [volume]);
+  const [id, setId] = useState("p001");
+  const produtos = useFetch<Produto[]>("https://data.origamid.dev/produtos");
+  const produto = useFetch<Produto>(
+    `https://data.origamid.dev/produtos/${id}`,
+    { cache: "force-cache" }
+  );
 
   return (
-    <div>
-      <div className="flex">
-        <button onClick={() => setVolume("0")}>0</button>
-        <button onClick={() => setVolume("0.5")}>50</button>
-        <button onClick={() => setVolume("1")}>100</button>
+    <section className="flex">
+      <div>
+        {produtos.data &&
+          produtos.data.map((produto) => (
+            <button
+              key={produto.id}
+              onClick={() => {
+                setId(produto.id);
+              }}
+              style={{ fontSize: "1rem" }}
+            >
+              {produto.id}
+            </button>
+          ))}
       </div>
 
-      <video controls ref={video} src={videoSrc}></video>
-    </div>
+      <div>
+        {produto.loading && <div>Carregando...</div>}
+        {produto.data && (
+          <ul>
+            <li>Id: {produto.data.id}</li>
+            <li>Nome: {produto.data.nome}</li>
+            <li>Descrição: {produto.data.descricao}</li>
+            <li>Quantidade: {produto.data.quantidade}</li>
+          </ul>
+        )}
+      </div>
+    </section>
   );
 }
 
