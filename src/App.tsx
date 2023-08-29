@@ -1,7 +1,8 @@
 import { useState } from "react";
 import useFetch from "./hooks/useFetch";
-import { UiContextProvider } from "./contexts/UiContext";
+import { UserContextProvider } from "./contexts/UserContext";
 import Header from "./components/Header";
+import Content from "./components/Content";
 
 // type Produto = {
 //   id: string;
@@ -50,9 +51,10 @@ function App() {
     //   </div>
     // </section>
 
-    <UiContextProvider>
+    <UserContextProvider>
       <Header />
-    </UiContextProvider>
+      <Content />
+    </UserContextProvider>
   );
 }
 
